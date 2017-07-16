@@ -20,17 +20,18 @@ class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var isLoading: Boolean = false
 
   override fun getItemViewType(position: Int): Int {
-    return when(itemList[position]) {
+    val item = itemList[position]
+    return when (item) {
       is UserItem -> viewTypeUser
       is ProgressItem -> viewTypeProgress
-      else -> throw IllegalArgumentException("unexpected position $position")
+      else -> throw IllegalArgumentException("unexpected item ${item.javaClass.simpleName}")
     }
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
 
-    return when(viewType) {
+    return when (viewType) {
       viewTypeUser -> UserViewHolder.create(inflater, parent)
       viewTypeProgress -> ProgressViewHolder.create(inflater, parent)
       else -> throw IllegalArgumentException("unexpected viewType $viewType")
@@ -58,7 +59,7 @@ class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private fun updateData() {
     val oldList = itemList.toList()
-    val newList: List<ListItem> = when(isLoading) {
+    val newList: List<ListItem> = when (isLoading) {
       true -> userList.map { UserItem(it) }.plus(ProgressItem)
       false -> userList.map { UserItem(it) }
     }
