@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
   lateinit var progressBar: ProgressBar
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    DaggerAppComponent.builder().build().inject(this)
+    App.component(this).inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     ButterKnife.bind(this)
